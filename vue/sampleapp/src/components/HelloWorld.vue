@@ -1,41 +1,72 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-typescript" target="_blank" rel="noopener">typescript</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+
+    <div id="app-6">
+      <p>Enter your name</p>
+      <input v-model="name" type="text">
+    </div>
+
+    <div id="app-6">
+      <p>Enter your email</p>
+      <input v-model="email" type="email">
+    </div>
+
+    <button @click="submit">Submit</button>
+    <button @click="show">Show all</button>
+
+     <table>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+      </tr>
+      <tr v-for="user in users">
+        <td>{{user["name"]}}</td>
+        <td>{{user["email"]}}</td>
+      </tr>
+    </table>
+
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Provide } from 'vue-property-decorator';
+import axios from 'axios'
 
 @Component
 export default class HelloWorld extends Vue {
-  @Prop() private msg!: string;
+  
+  name: string = '';
+  email: string = '';
+  users = []
+
+  data() {
+    return {
+      users: []
+    }
+  }
+
+  submit() {
+    return fetch(`http://localhost:3000/users`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: this.name,
+          email: this.email
+        })
+    }).then(result => result.json()).then(reply => console.log(reply));
+  }
+
+  show() {
+    return fetch(`http://localhost:3000/users`).then(result => result.json())
+      .then(reply => {
+        console.log(reply);
+        this.users = reply
+      });
+  }
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
