@@ -1,11 +1,13 @@
 import express = require('express');
 import * as bodyParser from 'body-parser'
 import { userRouter } from './routers/user.router'
+import cors from 'cors'
 
 // Create a new express application instance
 const app: express.Application = express();
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(cors())
 
 app.use('/', userRouter)
 

@@ -13,9 +13,11 @@
   "license": "ISC",
   "dependencies": {
     "@types/body-parser": "^1.17.0",
+    "@types/cors": "^2.8.4",
     "@types/express": "^4.16.1",
     "@types/sequelize": "^4.27.41",
     "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
     "express": "^4.16.4",
     "mysql2": "^1.6.5",
     "sequelize": "^4.43.0",

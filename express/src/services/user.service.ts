@@ -1,4 +1,4 @@
-import { User, UserModel, UserAddModel, UserViewModel } from '../models/user';
+import { User, UserAddModel } from '../models/user';
 
 export class UserService {
     create({ name, email }: UserAddModel) {
