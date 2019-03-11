@@ -55,7 +55,7 @@ export default class HelloWorld extends Vue {
           name: this.name,
           email: this.email
         })
-    }).then(result => result.json()).then(reply => console.log(reply));
+    }).then(result => result.json()).then(reply => if(reply) alert("user created"));
   }
 
   show() {
@@ -84,5 +84,22 @@ li {
 }
 a {
   color: #42b983;
+}
+
+table td, table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+table {
+  margin: auto;
+  margin-top: 10px;
+}
+
+button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 5px;
+  margin-left: 5px
 }
 </style>
