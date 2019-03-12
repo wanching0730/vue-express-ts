@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <User msg="Sample CRUD App"/>
+    <User msg="Newsletter Subscription"/>
   </div>
 </template>
 

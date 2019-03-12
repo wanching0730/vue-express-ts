@@ -3,30 +3,33 @@
 
     <div id="app-6">
       <h2>{{ msg }}</h2>
-      <p>Enter your name</p>
-      <input v-model="user.name" type="text">
+      <p>Enter name</p>
+      <input v-model="subscriber.name" type="text">
     </div>
 
     <div id="app-6">
-      <p>Enter your email</p>
-      <input v-model="user.email" type="email">
+      <p>Enter email</p>
+      <input v-model="subscriber.email" type="email">
     </div>
 
-    <button @click="create">Submit</button>
+    <button @click="create">Create</button>
     <button @click="update">Update</button>
-    <button @click="remove">Delete</button>
+
+    <h3>Subscribers</h3>
+    <small>Select any subsriber to update or delete</small>
+    <br/>
     <button @click="showAll">Show all</button>
+    <button @click="remove">Delete</button>
 
-
-     <table>
+    <table>
       <tr>
         <th>Name</th>
         <th>Email</th>
       </tr>
-      <tr v-for="user in users">
-        <td>{{user["name"]}}</td>
-        <td>{{user["email"]}}</td>
-        <input type="checkbox" :value="user.userId" @click="alertUser($event)">
+      <tr v-for="subscriber in subscribers">
+        <td>{{subscriber["name"]}}</td>
+        <td>{{subscriber["email"]}}</td>
+        <input type="checkbox" :value="subscriber.subscriberId" @click="alertUser($event)">
       </tr>
     </table>
 
@@ -35,64 +38,70 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Provide } from 'vue-property-decorator';
-import { User } from '../types';
-import axios from 'axios';
+import { Subscriber } from '../types';
 
 @Component
-export default class User extends Vue {
+export default class Subscriber extends Vue {
   @Prop() private msg!: string;
   
-  users: User[] = []
-  user: User = {
-    userId: 0
+  subscribers: Subscriber[] = []
+  subscriber: Subscriber = {
+    subsriberId: 0
     name: ''
     email: ''
   }
 
   alertUser(event:any) {
-    console.log(event.target.value);
-    this.user.userId = event.target.value;
+    if(event.target.checked) {
+      this.subscriber.subscriberId = event.target.value;
+      alert("UPDATE or DELETE?");
+    } else {
+      this.subscriber.subscriberId = 0;
+    }
+   
   }
 
   showAll() {
-    return fetch(`http://localhost:3000/users`).then(result => result.json())
+    return fetch(`http://localhost:3000/subscribers`).then(result => result.json())
       .then(reply => {
         console.log(reply);
-        this.users = reply
+        this.subscribers = reply
       });
   }
 
   create() {
-    return fetch(`http://localhost:3000/users`, {
+    return fetch(`http://localhost:3000/subscribers`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(this.user)
-    }).then(result => result.json()).then(reply => if(reply) alert("user created"));
+        body: JSON.stringify(this.subscriber)
+    }).then(result => result.json()).then(reply => if(reply) alert("subscriber created"));
   }
 
   update() {
-    // return axios.put(`http://locahost:3000/users/${this.user.userId}`,JSON.stringify(this.user)).then(
-    //   result => alert("done")
-    // );
-    console.log(JSON.stringify(this.user));
-    return fetch(`http://locahost:3000/users/${this.user.userId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(this.user)
-    }).then(result => result.json()).then(reply => if(reply) alert("user updated"))
+    if(this.subscriber.subscriberId != 0) {
+      return fetch(`http://localhost:3000/subscribers/${this.subscriber.subscriberId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(this.subscriber)
+      }).then(result => result.json()).then(reply => if(reply) alert("subscriber updated"))
+    } else {
+      alert("Please select subscriber to update");
+    }
+    
   }
 
   remove() {
-    // return axios.delete(`http://locahost:3000/users/` + this.user.userId).then(
-    //   result => result
-    //)
-    // return fetch(`http://locahost:3000/users/` + this.user.userId, {
-    //   method: 'DELETE'
-    // }).then(result => result.json()).then(reply => if(reply) alert("user deleted"))
+    if(this.subscriber.subscriberId != 0) {
+      return fetch(`http://localhost:3000/subscribers/` + this.subscriber.subscriberId, {
+        method: 'DELETE'
+      }).then(result => result.json()).then(reply => if(reply) alert("subscriber deleted"))
+    } else {
+      alert("Please select subscriber to delete");
+    }
   }
 }
 
