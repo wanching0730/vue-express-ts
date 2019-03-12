@@ -5,7 +5,7 @@ export class SubscriberService {
         return Subscriber.create({name, email}).then(
             subscriber => subscriber
         ).catch(function (err) {
-            return err
+            return {"error": err}
           });
     }
 
@@ -13,7 +13,7 @@ export class SubscriberService {
         return Subscriber.findAll().then(
             subscriber => subscriber
         ).catch(function (err) {
-            return err
+            return {"error": err}
           });
     }
 
@@ -21,7 +21,7 @@ export class SubscriberService {
         return Subscriber.update({ name, email }, {where: {subscriberId:id}}).then(
             count => count
         ).catch(function (err) {
-            return err
+            return {"error": err}
           });
     }
 
@@ -29,7 +29,7 @@ export class SubscriberService {
         return Subscriber.destroy({where: {subscriberId:id}}).then(
             count => count
         ).catch(function (err) {
-            return err
+            return {"error": err}
           });
     }
 }

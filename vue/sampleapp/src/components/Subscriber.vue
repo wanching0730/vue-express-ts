@@ -5,12 +5,11 @@
       <h2>{{ msg }}</h2>
       <p>Enter name</p>
       <input v-model="subscriber.name" type="text">
+
+      <p>Enter email</p>
+      <input v-model="subscriber.email" type="text">
     </div>
 
-    <div id="app-6">
-      <p>Enter email</p>
-      <input v-model="subscriber.email" type="email">
-    </div>
 
     <button @click="create">Create</button>
     <button @click="update">Update</button>
@@ -64,8 +63,8 @@ export default class Subscriber extends Vue {
   showAll() {
     return fetch(`http://localhost:3000/subscribers`).then(result => result.json())
       .then(reply => {
-        this.subscribers = reply
-      });
+        if(!reply.error) this.subscribers = reply else alert("Something wents wrong");
+      })
   }
 
   create() {
@@ -75,7 +74,7 @@ export default class Subscriber extends Vue {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(this.subscriber)
-    }).then(result => result.json()).then(reply => if(reply) alert("subscriber created"));
+    }).then(result => result.json()).then(reply => if(!reply.error) alert("subscriber created") else alert("Something wents wrong"));
   }
 
   update() {
@@ -86,7 +85,7 @@ export default class Subscriber extends Vue {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(this.subscriber)
-      }).then(result => result.json()).then(reply => if(reply) alert("subscriber updated"))
+      }).then(result => result.json()).then(reply => if(!reply.error) alert("subscriber updated") else alert("Something wents wrong"));
     } else {
       alert("Please select subscriber to update");
     }
@@ -97,7 +96,7 @@ export default class Subscriber extends Vue {
     if(this.subscriber.subscriberId != 0) {
       return fetch(`http://localhost:3000/subscribers/` + this.subscriber.subscriberId, {
         method: 'DELETE'
-      }).then(result => result.json()).then(reply => if(reply) alert("subscriber deleted"))
+      }).then(result => result.json()).then(reply => if(!reply.error) alert("subscriber deleted") else alert("Something wents wrong"));
     } else {
       alert("Please select subscriber to delete");
     }
