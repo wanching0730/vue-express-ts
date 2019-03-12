@@ -38,15 +38,15 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Provide } from 'vue-property-decorator';
-import { Subscriber } from '../types';
+import { NewsSubscriber } from '../types';
 
 @Component
 export default class Subscriber extends Vue {
   @Prop() private msg!: string;
   
-  subscribers: Subscriber[] = []
-  subscriber: Subscriber = {
-    subsriberId: 0
+  subscribers: NewsSubscriber[] = []
+  subscriber: NewsSubscriber = {
+    subscriberId: 0
     name: ''
     email: ''
   }

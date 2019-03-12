@@ -7,11 +7,11 @@
 
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
-  import User from './components/User.vue';
+  import Subscriber from './components/Subscriber.vue';
 
   @Component({
     components: {
-      User,
+      Subscriber,
     },
   })
   export default class App extends Vue {}

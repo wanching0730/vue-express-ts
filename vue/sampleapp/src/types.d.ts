@@ -1,5 +1,5 @@
-export interface Subscriber {
-    subsriberId?: number
+export interface NewsSubscriber {
+    subscriberId?: number
     name: string
     email: string
     createdAt?: string
