@@ -1,28 +1,28 @@
 import * as Sequelize from 'sequelize'
 import { sequelize } from '../instances/sequelize';
 
-export interface UserAddModel {
-    userId?: number
+export interface SubscriberAddModel {
+    subscriberId?: number
     name: string
     email: string
 }
 
-export interface UserModel extends Sequelize.Model<UserModel, UserAddModel> {
-    userId: number
+export interface SubscriberModel extends Sequelize.Model<SubscriberModel, SubscriberAddModel> {
+    subscriberId: number
     name: string
     email: string
     createdAt?: string
     updatedAt?: string
 }
 
-export interface UserViewModel {
-    userId: number
+export interface SubscriberViewModel {
+    subscriberId: number
     name: string
     email: string
 }
 
-export const User = sequelize.define<UserModel, UserAddModel>('user', {
-    userId: {
+export const Subscriber = sequelize.define<SubscriberModel, SubscriberAddModel>('subscriber', {
+    subscriberId: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true

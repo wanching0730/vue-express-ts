@@ -64,7 +64,6 @@ export default class Subscriber extends Vue {
   showAll() {
     return fetch(`http://localhost:3000/subscribers`).then(result => result.json())
       .then(reply => {
-        console.log(reply);
         this.subscribers = reply
       });
   }
