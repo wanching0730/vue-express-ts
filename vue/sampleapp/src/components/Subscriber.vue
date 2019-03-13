@@ -3,34 +3,21 @@
 
     <div id="app-6">
       <h2>{{ msg }}</h2>
+       <p v-if="errors.length">
+        <b>Please correct the following error(s):</b>
+        <ul>
+          <li v-for="error in errors">{{ error }}</li>
+        </ul>
+      </p>
+
       <p>Enter name</p>
       <input v-model="subscriber.name" type="text">
 
       <p>Enter email</p>
-      <input v-model="subscriber.email" type="text">
+      <input v-model="subscriber.email" type="email">
     </div>
 
-
     <button @click="create">Create</button>
-    <button @click="update">Update</button>
-
-    <h3>Subscribers</h3>
-    <small>Select any subsriber to update or delete</small>
-    <br/>
-    <button @click="showAll">Show all</button>
-    <button @click="remove">Delete</button>
-
-    <table>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-      </tr>
-      <tr v-for="subscriber in subscribers">
-        <td>{{subscriber["name"]}}</td>
-        <td>{{subscriber["email"]}}</td>
-        <input type="checkbox" :value="subscriber.subscriberId" @click="alertUser($event)">
-      </tr>
-    </table>
 
   </div>
 </template>
@@ -43,99 +30,56 @@ import { NewsSubscriber } from '../types';
 export default class Subscriber extends Vue {
   @Prop() private msg!: string;
   
-  subscribers: NewsSubscriber[] = []
+  errors: string[] = [];
+
   subscriber: NewsSubscriber = {
     subscriberId: 0
     name: ''
     email: ''
   }
 
-  alertUser(event:any) {
-    if(event.target.checked) {
-      this.subscriber.subscriberId = event.target.value;
-      alert("UPDATE or DELETE?");
-    } else {
-      this.subscriber.subscriberId = 0;
-    }
-   
-  }
-
-  showAll() {
-    return fetch(`http://localhost:3000/subscribers`).then(result => result.json())
-      .then(reply => {
-        if(!reply.error) this.subscribers = reply else alert("Something wents wrong");
-      })
+  validEmail (email: string) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
   }
 
   create() {
-    return fetch(`http://localhost:3000/subscribers`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(this.subscriber)
-    }).then(result => result.json()).then(reply => if(!reply.error) alert("subscriber created") else alert("Something wents wrong"));
-  }
+    this.errors = [];
 
-  update() {
-    if(this.subscriber.subscriberId != 0) {
-      return fetch(`http://localhost:3000/subscribers/${this.subscriber.subscriberId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(this.subscriber)
-      }).then(result => result.json()).then(reply => if(!reply.error) alert("subscriber updated") else alert("Something wents wrong"));
-    } else {
-      alert("Please select subscriber to update");
+    if (!this.subscriber.name) {
+      this.errors.push('Name required.');
     }
-    
-  }
 
-  remove() {
-    if(this.subscriber.subscriberId != 0) {
-      return fetch(`http://localhost:3000/subscribers/` + this.subscriber.subscriberId, {
-        method: 'DELETE'
-      }).then(result => result.json()).then(reply => if(!reply.error) alert("subscriber deleted") else alert("Something wents wrong"));
-    } else {
-      alert("Please select subscriber to delete");
+    if (!this.subscriber.email) {
+      this.errors.push('Email required.');
+    } else if (!this.validEmail(this.subscriber.email)) {
+      this.errors.push('Valid email required.');
     }
-  }
+
+    if (!this.errors.length) {
+      return fetch(`http://localhost:3000/subscribers`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(this.subscriber)
+      }).then(result => result.json()).then(reply => if(!reply.error) alert("subscriber created") else alert("Something wents wrong"));
+    }
+  } 
 }
 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-
-table td, table th {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-
-table {
-  margin: auto;
-  margin-top: 10px;
-}
-
 button {
   margin-top: 10px;
   margin-bottom: 10px;
   margin-right: 5px;
   margin-left: 5px
+}
+
+li {
+  color: red;
 }
 </style>
