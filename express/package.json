@@ -9,7 +9,7 @@
     "dev": "ts-node-dev --respawn --transpileOnly ./src/index.ts",
     "prod": "tsc && node ./build/app.js"
   },
-  "author": "",
+  "author": "express",
   "license": "ISC",
   "dependencies": {
     "@types/body-parser": "^1.17.0",
