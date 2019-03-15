@@ -28,5 +28,12 @@ export const Subscriber = sequelize.define<SubscriberModel, SubscriberAddModel>(
         primaryKey: true
     },
     name: Sequelize.STRING,
-    email: Sequelize.STRING
+    email: {
+        type: Sequelize.STRING,
+        validate: {
+            isEmail: {
+                msg: "Email address must be valid"
+            }
+        }
+    }
 })

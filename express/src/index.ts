@@ -1,4 +1,5 @@
 import express = require('express');
+import { Request, Response } from 'express';
 import * as bodyParser from 'body-parser'
 import { subscriberRouter } from './routers/subscriber.router'
 import cors from 'cors'
@@ -11,10 +12,10 @@ app.use(cors())
 
 app.use('/', subscriberRouter)
 
-app.get('/', function (req, res) {
+app.get('/', function (req: Request, res: Response) {
   res.send('Hello World!');
 });
 
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+app.listen(8081, function () {
+  console.log('Example app listening on port 8081!');
 });

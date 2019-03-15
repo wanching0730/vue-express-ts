@@ -1,0 +1,5 @@
+Hosting in Beanstalk:
+- change listening port to 8081 in index.ts
+- make sure all variables and parameters have types: Request, Response
+- make sure "prod" in package json point to ./dist/index.js
+- make sure "npm command" in Beanstalk is set to "npm run prod"

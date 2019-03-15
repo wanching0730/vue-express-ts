@@ -2,11 +2,7 @@ import { Subscriber, SubscriberAddModel } from '../models/subsriber';
 
 export class SubscriberService {
     create({ name, email }: SubscriberAddModel) {
-        return Subscriber.create({name, email}).then(
-            subscriber => subscriber
-        ).catch(function (err) {
-            return {"error": err}
-          });
+        return Subscriber.create({name, email});
     }
 
     get() {
