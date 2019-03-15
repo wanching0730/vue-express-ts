@@ -12,3 +12,9 @@ Connection between rds and beanstalk
 - set inbound security rules in rds
 - set the same security group in beanstalk (Instances configuration)
 - set environmental variable in beanstalk (software configuration)
+
+Hosting vue in S3
+- configure s3 bucket to static hosting
+- configure s3 bucket policy for read only access for anonymous user
+- npm run build
+- upload files in dist

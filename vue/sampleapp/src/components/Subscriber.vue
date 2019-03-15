@@ -19,6 +19,9 @@
 
     <button @click="create">Create</button>
 
+    <br/>
+    <p>{{ result }}</p>
+
   </div>
 </template>
 
@@ -31,10 +34,11 @@ export default class Subscriber extends Vue {
   @Prop() private msg!: string;
   
   errors: string[] = [];
+  result: string = '';
 
-  subscriber: NewsSubscriber = {
-    subscriberId: 0
-    name: ''
+  subscriber = <NewsSubscriber> {
+    subscriberId: 0,
+    name: '',
     email: ''
   }
 
@@ -57,13 +61,19 @@ export default class Subscriber extends Vue {
     }
 
     if (!this.errors.length) {
-      return fetch(`http://localhost:3000/subscribers`, {
+      return fetch(`http://newsletter-env.xcjpdqce3e.ap-southeast-1.elasticbeanstalk.com/subscribers`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(this.subscriber)
-      }).then(result => result.json()).then(reply => if(!reply.error) alert("subscriber created") else alert("Something wents wrong"));
+      }).then(result => result.json()).then(reply => { 
+        if(!reply.error) {
+          this.result = reply;
+          alert("subscriber created")
+        }
+        else alert("Something wents wrong")}
+      );
     }
   } 
 }
