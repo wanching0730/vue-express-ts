@@ -1,5 +1,14 @@
-Hosting in Beanstalk:
+Hosting express in Beanstalk:
 - change listening port to 8081 in index.ts
 - make sure all variables and parameters have types: Request, Response
 - make sure "prod" in package json point to ./dist/index.js
 - make sure "npm command" in Beanstalk is set to "npm run prod"
+- do not ZIP file in root folder.
+
+Hosting DB in RDS
+- must be same country for rds and beanstalk
+
+Connection between rds and beanstalk
+- set inbound security rules in rds
+- set the same security group in beanstalk (Instances configuration)
+- set environmental variable in beanstalk (software configuration)
